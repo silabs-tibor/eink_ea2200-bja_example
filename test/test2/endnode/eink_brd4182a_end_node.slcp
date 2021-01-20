@@ -1,0 +1,102 @@
+# Silicon Labs Project Configuration Tools: slcp, v0, Component selection file.
+include:
+- path: ''
+  file_list:
+  - {path: app_init.h}
+  - {path: app_process.h}
+package: Flex
+configuration:
+- {name: SL_RAIL_UTIL_TRANSITION_TX_SUCCESS, value: RAIL_RF_STATE_RX}
+- {name: SL_RAIL_UTIL_TRANSITION_TX_ERROR, value: RAIL_RF_STATE_RX}
+- {name: SL_RAIL_UTIL_TRANSITION_RX_SUCCESS, value: RAIL_RF_STATE_RX}
+- {name: SL_RAIL_UTIL_TRANSITION_RX_ERROR, value: RAIL_RF_STATE_RX}
+- {name: SL_RAIL_UTIL_BLE_SUPPORT_ENABLE, value: '0'}
+- {name: SL_RAIL_UTIL_CAL_TEMP_ENABLE, value: '0'}
+- {name: SL_RAIL_UTIL_CAL_ONETIME_ENABLE, value: '0'}
+- {name: SL_RAIL_UTIL_EVENT_RSSI_AVERAGE_DONE_ENABLE, value: '0'}
+- {name: SL_RAIL_UTIL_EVENT_RX_FIFO_ALMOST_FULL_ENABLE, value: '0'}
+- {name: SL_RAIL_UTIL_EVENT_RX_PREAMBLE_DETECT_ENABLE, value: '0'}
+- {name: SL_RAIL_UTIL_EVENT_RX_SYNC1_DETECT_ENABLE, value: '0'}
+- {name: SL_RAIL_UTIL_EVENT_RX_SYNC2_DETECT_ENABLE, value: '0'}
+- {name: SL_RAIL_UTIL_EVENT_RX_FIFO_FULL_ENABLE, value: '0'}
+- {name: SL_RAIL_UTIL_EVENT_RX_TIMEOUT_ENABLE, value: '0'}
+- {name: SL_RAIL_UTIL_EVENT_RX_SCHEDULED_RX_END_ENABLE, value: '0'}
+- {name: SL_RAIL_UTIL_EVENT_RX_FILTER_PASSED_ENABLE, value: '0'}
+- {name: SL_RAIL_UTIL_EVENT_RX_TIMING_LOST_ENABLE, value: '0'}
+- {name: SL_RAIL_UTIL_EVENT_RX_TIMING_DETECT_ENABLE, value: '0'}
+- {name: SL_RAIL_UTIL_EVENT_RX_CHANNEL_HOPPING_COMPLETE_ENABLE, value: '0'}
+- {name: SL_RAIL_UTIL_EVENT_RX_DUTY_CYCLE_RX_END_ENABLE, value: '0'}
+- {name: SL_RAIL_UTIL_EVENT_RX_ACK_TIMEOUT_ENABLE, value: '0'}
+- {name: SL_RAIL_UTIL_EVENT_TX_FIFO_ALMOST_EMPTY_ENABLE, value: '0'}
+- {name: SL_RAIL_UTIL_EVENT_TX_CHANNEL_CLEAR_ENABLE, value: '0'}
+- {name: SL_RAIL_UTIL_EVENT_TX_CCA_RETRY_ENABLE, value: '0'}
+- {name: SL_RAIL_UTIL_EVENT_TX_START_CCA_ENABLE, value: '0'}
+- {name: SL_RAIL_UTIL_EVENT_TX_STARTED_ENABLE, value: '0'}
+- {name: SL_RAIL_UTIL_EVENT_TXACK_PACKET_SENT_ENABLE, value: '0'}
+- {name: SL_RAIL_UTIL_EVENT_TXACK_ABORTED_ENABLE, value: '0'}
+- {name: SL_RAIL_UTIL_EVENT_TXACK_BLOCKED_ENABLE, value: '0'}
+- {name: SL_RAIL_UTIL_EVENT_TXACK_UNDERFLOW_ENABLE, value: '0'}
+- {name: SL_RAIL_UTIL_EVENT_IEEE802154_DATA_REQUEST_COMMAND_ENABLE, value: '0'}
+- {name: SL_RAIL_UTIL_EVENT_ZWAVE_BEAM_ENABLE, value: '0'}
+- condition: [iostream_usart]
+  name: SL_BOARD_ENABLE_VCOM
+  value: '1'
+- {name: SL_CLI_LOCAL_ECHO, value: 'true'}
+- {name: SL_IOSTREAM_USART_VCOM_CONVERT_BY_DEFAULT_LF_TO_CRLF, value: 'true'}
+- condition: [iostream_usart]
+  name: SL_IOSTREAM_USART_VCOM_FLOW_CONTROL_TYPE
+  value: usartHwFlowControlNone
+description: |-
+  This application demonstrates the simplest exchange of transmit and receive operation between two nodes. Both nodes are capable of sending and receiving messages. On the WSTK, any button press (PB0/PB1) will send a message. LED0 will toggle on message send and LED1 will toggle on message receive. CLI can also be used for sending and showing received messages. To send enter 'tx' or 'send'. By default the received packets will be printed out in terminal, to enable or disable print enter 'rx 1' ('receive 1') or 'rx 0' ('receive 0') in terminal.
+  NOTE: Due to the higher current consumption of the continuous radio usage (especially in Rx Mode), it is not recommended to power the boards from a coin cell. Instead, an USB power bank can be used if portability is needed.
+label: eink_brd4182a_end_node
+source:
+- {path: main.c}
+- {path: app_init.c}
+- {path: app_process.c}
+- {path: app_cli.c}
+project_name: eink_brd4182a_end_node
+quality: production
+template_contribution:
+- name: cli_command
+  priority: 0
+  value: {name: info, handler: cli_info, help: Unique ID of the MCU}
+- name: cli_command
+  priority: 0
+  value: {name: send, handler: cli_send_packet, help: Send a packet}
+- name: cli_command
+  priority: 0
+  value:
+    name: receive
+    handler: cli_receive_packet
+    help: Turn ON/OFF received message forwarding on CLI
+    argument:
+    - {type: uint8, help: ON/OFF}
+component:
+- {id: emlib_rmu}
+- {id: radio_config_simple_rail_singlephy}
+- {id: sl_system}
+- {id: brd4001a}
+- {id: brd4182a_b05}
+- {id: mpu}
+- {id: rail_util_init}
+- instance: [led0, led1]
+  id: simple_led
+- {id: rail_util_pa}
+- {id: EFR32MG22C224F512IM40}
+- {id: sl_simple_rail_stub}
+- {id: device_init}
+- {id: rail_util_pti}
+- {id: sleeptimer}
+tag: ['hardware:device:ram:16', 'hardware:component:led:2+', 'hardware:component:button:2+',
+  'hardware:component:pti', 'hardware:component:vcom', 'hardware:device:flash:64',
+  'hardware:device:!module', 'hardware:rf:count:1+', 'hardware:type:rb']
+category: RAIL Examples
+toolchain_settings:
+- {value: debug, option: optimize}
+ui_hints: {}
+requires:
+- {name: a_radio_config}
+- condition: [device_is_module]
+  name: module_not_supported
+

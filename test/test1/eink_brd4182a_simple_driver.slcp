@@ -1,0 +1,27 @@
+# Silicon Labs Project Configuration Tools: slcp, v0, Component selection file.
+include:
+- path: ''
+  file_list:
+  - {path: app.h}
+component:
+- {id: EFR32MG22C224F512IM40}
+- {id: sl_system}
+- {id: device_init}
+- {id: brd4182a_b03}
+- {id: brd4001a}
+- {id: sleeptimer}
+package: platform
+define:
+- {name: DEBUG_EFM}
+description: |
+  This example project shows an empty configuration that can be used as a starting point to add components and functionality.
+label: eink_brd4182a_simple_driver
+source:
+- {path: app.c}
+- {path: main.c}
+project_name: eink_brd4182a_simple_driver
+category: Example|Platform
+toolchain_settings: []
+ui_hints: {}
+quality: production
+
