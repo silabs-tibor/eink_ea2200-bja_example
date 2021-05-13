@@ -355,7 +355,7 @@ class Application(tk.Frame):
     def closeApp(self):
         print ('Quit ...')
         print ('Address:' + self.filenameAndPath)
-        #self.root.destroy
+        sys.exit(0)
 		
     '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 	# Process menu commands                                                                          #

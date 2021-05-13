@@ -1,2 +1,2 @@
 python.exe imageConsol.py
-pause
+::pause
